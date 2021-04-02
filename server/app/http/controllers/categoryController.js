@@ -5,7 +5,7 @@ const Joi = require('joi');
 const Task = require('../../models/Task');
 
 /**
- * 
+ * Get all the categories aslong with the related tasks
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -25,7 +25,7 @@ exports.show = (req, res, next) => { }
 
 
 /**
- * 
+ * Save the category and joi validation.
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -49,8 +49,9 @@ exports.store = async (req, res, next) => {
     }
 }
 
+
 /**
- * 
+ * Update Category Name.
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -77,8 +78,20 @@ exports.update = async (req, res, next) => {
     }
 }
 
+
+/**
+ * 
+ */
 exports.delete = () => { }
 
+
+/**
+ * Modify the response header to download the json format of categories withe related task.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.download = async (req, res, next) => {
     const date = getTimeFormats();
     res.writeHead(200, {
@@ -92,7 +105,7 @@ exports.download = async (req, res, next) => {
 }
 
 /**
- * 
+ * Flush all the record categories/task
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 

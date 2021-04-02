@@ -4,6 +4,13 @@ const Category = require('../../models/Category');
 const Joi = require('joi');
 const Task = require('../../models/Task');
 
+/**
+ * Select all categories on (name)
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.index = async (req, res, next) => {
     try {
         const categories = await Category.find().select({ name: 1 });
@@ -17,6 +24,13 @@ exports.index = async (req, res, next) => {
 exports.show = (req, res, next) => { }
 
 
+/**
+ * Store a new card and svg data also add reference
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 exports.store = async (req, res, next) => {
     try {
         //validate
@@ -50,7 +64,9 @@ exports.store = async (req, res, next) => {
 
 
 /**
+ * Handle task update and duplicate with [mode=DUPLICATE/CREATE] request param
  * 
+ * Handling both on the same function because it will be easy to add feature id the card shuould be updated before the duplication
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -72,6 +88,8 @@ exports.update = async (req, res, next) => {
         if (!task) return responseError(res, { msg: 'Task not found', statusType: HTTP_NOT_FOUND });
 
         if (req.query.mode && req.query.mode === 'DUPLICATE') {
+            //if duplicate save a new task on the searched task's category aslo attach the new reference 
+            //to category
             const taskModel = new Task({ svg_events, category: task.category });
             const newTask = await taskModel.save();
             await Category.findByIdAndUpdate(newTask.category, {
@@ -80,10 +98,10 @@ exports.update = async (req, res, next) => {
             return responseSuccess(res, { data: [], msg: 'Task copied successfully' });
         }
 
+        //else just update
         task.svg_events = svg_events;
         await task.save();
         return responseSuccess(res, { data: [], msg: 'Task was updated successfully' });
-
 
     } catch (e) {
         next(e);
@@ -91,7 +109,7 @@ exports.update = async (req, res, next) => {
 }
 
 /**
- * 
+ * Delete the task also remove the reference from the category
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
@@ -113,7 +131,8 @@ exports.delete = async (req, res, next) => {
 }
 
 /**
- * 
+ * Update the task's category 
+ * 1) Remove task object id from the old category tasks relation and push to the new category
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 

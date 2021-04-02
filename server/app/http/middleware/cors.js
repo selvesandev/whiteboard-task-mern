@@ -1,3 +1,10 @@
+/**
+ * Handle Cors
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 module.exports = function (req, res, next) {
     //give access to all
     res.header('Access-Control-Allow-Origin', '*');
