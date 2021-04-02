@@ -35,7 +35,6 @@ function App() {
     });
   }, []);//call the function only once when the app initialized for the first time.
 
-
   return (
     <div className="App">
       {/* React DnD Lirabry for drag and drop task around the category box */}
@@ -52,13 +51,13 @@ function App() {
             return;
           }
           //reorder the category statically and with api when dropped.
-          dispatch(reOrderCategory({ destination: destination.droppableId, id: draggableId, source: source.droppableId }));
+          dispatch(reOrderCategory({ destination: destination.droppableId, id: draggableId, source: source.droppableId, sourceIndex: source.index, destinationIndex: destination.index }));
         }}
       >
         {categoryState.data.map((category, catIn) => {
           //Category Box contains the list of task under a category
           return (
-            <Droppable droppableId={String(category._id)} key={catIn}>
+            <Droppable droppableId={String(category._id)} key={category._id}>
               {(provided, snapshot) => (
                 <section className={"category_iterator " + (snapshot.isDraggingOver ? 'dragging_over' : '')} {...provided.droppableProps} ref={provided.innerRef}>
                   <CategoryBox
@@ -67,7 +66,7 @@ function App() {
                   >
                     {category.tasks ? category.tasks.map((task, taIn) => {
                       //Task List inside the categories which can be moved aroud
-                      return <Draggable index={taIn} draggableId={String(task._id)} key={taIn + catIn}>
+                      return <Draggable index={taIn} draggableId={String(task._id)} key={task._id}>
                         {(provided, snapshot) =>
                           <div ref={provided.innerRef}
                             className={snapshot.isDragging ? 'is_dragging' : ''}

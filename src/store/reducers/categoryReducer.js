@@ -39,15 +39,9 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
             };
         case ActionTypes.CATEGORY_TASK_REORDER_STATIC:
             let taskSelected = {};
-            let destination = {};
-            let source = {};
+            // let destination = {};
+            // let source = {};
             state.data.map(item => {
-                if (action.payload.destination === item._id) {
-                    destination = item;
-                }
-                if (action.payload.source === item._id) {
-                    source = item;
-                }
                 item.tasks = item.tasks.filter(task => {
                     if (task._id === action.payload.id) {
                         taskSelected = task;
@@ -57,13 +51,15 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                 });
                 return item;
             });
-            console.log(destination, source);
-            state.data.map(item => {
+            state.data = state.data.map(item => {
                 if (item._id === action.payload.destination) {
                     item.tasks.push(taskSelected);
+                } else {
+                    // item.tas
                 }
                 return item;
             });
+            console.log(state.data, 'reducer');
             state.lastSavedOrder = action.payload;
             return {
                 ...state

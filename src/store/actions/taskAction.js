@@ -72,7 +72,7 @@ export const deleteTask = ({ id }) => async (dispatch) => {
  * @param {*} param0 
  * @returns 
  */
-export const reOrderCategory = ({ destination, id, source }) => async (dispatch, getState) => {
+export const reOrderCategory = ({ destination, id, source, sourceIndex, destinationIndex }) => async (dispatch, getState) => {
     try {
         if (destination === source) return;
 
@@ -84,9 +84,7 @@ export const reOrderCategory = ({ destination, id, source }) => async (dispatch,
             const response = await put({ url: `/task/reorder/${order.id}`, data: { category: order.destination } }).catch(err => {
                 console.log(err);
             });
-            // dispatch(getCategories(false));
             return response;
-
         }
 
     } catch (err) {
