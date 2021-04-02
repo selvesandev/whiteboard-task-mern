@@ -27,14 +27,14 @@ const TaskModal = ({ onClose, height = 440, category, show, mode = 'CREATE', sel
             if (svgEvents && svgEvents.length) {
                 if (selectedTask) {
                     dispatch(updateTask({ svg_events: svgEvents, id: selectedTask._id, mode })).then(res => {
-                        dispatch(getCategories());
+                        // dispatch(getCategories());
                         onClose();
                     }).catch(err => {
                         console.log(err);
                     })
                 } else {
                     dispatch(createTask({ svg_events: svgEvents, category: category._id })).then(res => {
-                        dispatch(getCategories());
+                        // dispatch(getCategories());
                         svgEvents = [];
                         onClose();
                     }).catch(err => {

@@ -56,7 +56,7 @@ exports.store = async (req, res, next) => {
             $push: { tasks: task._id },
         }, { new: true, useFindAndModify: false });
 
-        return responseSuccess(res, { data: [], msg: 'Task was saved successfully' });
+        return responseSuccess(res, { data: task, msg: 'Task was saved successfully' });
     } catch (e) {
         next(e);
     }
@@ -101,7 +101,7 @@ exports.update = async (req, res, next) => {
         //else just update
         task.svg_events = svg_events;
         await task.save();
-        return responseSuccess(res, { data: [], msg: 'Task was updated successfully' });
+        return responseSuccess(res, { data: task, msg: 'Task was updated successfully' });
 
     } catch (e) {
         next(e);

@@ -8,6 +8,11 @@ const INITIAL_STATE = {
         // {name:'category',tasks:[{},{}]}
     ],
     fetching: false,
+    lastSavedOrder: {
+        destination: '',
+        id: '',
+        source: ''
+    }
 }
 
 /**
@@ -34,7 +39,15 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
             };
         case ActionTypes.CATEGORY_TASK_REORDER_STATIC:
             let taskSelected = {};
+            let destination = {};
+            let source = {};
             state.data.map(item => {
+                if (action.payload.destination === item._id) {
+                    destination = item;
+                }
+                if (action.payload.source === item._id) {
+                    source = item;
+                }
                 item.tasks = item.tasks.filter(task => {
                     if (task._id === action.payload.id) {
                         taskSelected = task;
@@ -44,12 +57,14 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                 });
                 return item;
             });
+            console.log(destination, source);
             state.data.map(item => {
                 if (item._id === action.payload.destination) {
                     item.tasks.push(taskSelected);
                 }
                 return item;
             });
+            state.lastSavedOrder = action.payload;
             return {
                 ...state
             };
@@ -61,6 +76,24 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                     }
                     return task;
                 });
+                return item;
+            });
+            return {
+                ...state
+            };
+
+        case ActionTypes.CATEGORY_TASK_STATIC:
+            state.data.map(item => {
+                if (item._id === action.payload.category) {
+                    let isStatic = false;
+                    let id = randomStr(10);
+                    if (action.payload.id) {
+                        id = action.payload.id;
+                        isStatic = false;
+                    }
+
+                    item.tasks.push({ _id: id, svg_events: action.payload.svg_events, category: action.payload.category, static: isStatic });
+                }
                 return item;
             });
             return {

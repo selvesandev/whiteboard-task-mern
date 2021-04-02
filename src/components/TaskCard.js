@@ -25,6 +25,8 @@ const TaskCard = ({ task, onUpdate, onDelete, onDuplicate }) => {
         <div className="card_action">
             <a href="/" disabled={duplicate} className={(duplicate ? 'disabled' : '')} onClick={(e) => {
                 e.preventDefault();
+                if (task.static) return;
+
                 setDuplicate(true);
                 dispatch(updateTask({ id: task._id, svg_events: task.svg_events, mode: 'DUPLICATE' })).then((res) => {
                     dispatch(getCategories());
@@ -38,12 +40,15 @@ const TaskCard = ({ task, onUpdate, onDelete, onDuplicate }) => {
 
             <a href="/" onClick={(e) => {
                 e.preventDefault();
+                if (task.static) return;
+
                 if (onUpdate) onUpdate();
             }} >
                 <i className="far fa-pen"></i>
             </a>
             <a href="/" onClick={(e) => {
                 e.preventDefault();
+                if (task.static) return;
                 dispatch(deleteTask({ id: task._id })).catch(() => {
                 });
             }}>

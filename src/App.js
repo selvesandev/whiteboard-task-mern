@@ -42,6 +42,15 @@ function App() {
       <DragDropContext
         onDragEnd={(result) => {
           const { destination, source, draggableId } = result;
+          if (!destination) {
+            return;
+          }
+          if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+          ) {
+            return;
+          }
           //reorder the category statically and with api when dropped.
           dispatch(reOrderCategory({ destination: destination.droppableId, id: draggableId, source: source.droppableId }));
         }}
@@ -50,8 +59,8 @@ function App() {
           //Category Box contains the list of task under a category
           return (
             <Droppable droppableId={String(category._id)} key={catIn}>
-              {provided => (
-                <section className="category_iterator" {...provided.droppableProps} ref={provided.innerRef}>
+              {(provided, snapshot) => (
+                <section className={"category_iterator " + (snapshot.isDraggingOver ? 'dragging_over' : '')} {...provided.droppableProps} ref={provided.innerRef}>
                   <CategoryBox
                     key={catIn}
                     category={category}
@@ -59,8 +68,10 @@ function App() {
                     {category.tasks ? category.tasks.map((task, taIn) => {
                       //Task List inside the categories which can be moved aroud
                       return <Draggable index={taIn} draggableId={String(task._id)} key={taIn + catIn}>
-                        {provided =>
-                          <div ref={provided.innerRef} {...provided.draggableProps}
+                        {(provided, snapshot) =>
+                          <div ref={provided.innerRef}
+                            className={snapshot.isDragging ? 'is_dragging' : ''}
+                            {...provided.draggableProps}
                             {...provided.dragHandleProps}>
                             <TaskCard
                               onUpdate={() => {
@@ -81,7 +92,7 @@ function App() {
                     {/* TODO Add New Task Button Move this to a new component*/}
                     <div
                       onClick={() => {
-                        if (!category.static && !categoryState.fetching) {
+                        if (!category.static) {
                           setSelectedTask(null);
                           setselectedCategory(category);
                         }

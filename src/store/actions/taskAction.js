@@ -20,7 +20,11 @@ export const taskGeneralStateChange = ({ props, value, deep }) => {
 export const createTask = ({ category, svg_events }) => async (dispatch) => {
     try {
         dispatch(taskGeneralStateChange({ props: 'saving', value: true }));
-        return await post({ url: '/task', data: { category, svg_events } });
+
+        const response = await post({ url: '/task', data: { category, svg_events } });
+        // console.log(response.data.data);
+        dispatch({ type: ActionTypes.CATEGORY_TASK_STATIC, payload: { category, svg_events, id: response.data.data._id } });
+
     } catch (err) {
         throw Error(err);
     } finally {
@@ -36,8 +40,8 @@ export const createTask = ({ category, svg_events }) => async (dispatch) => {
 export const updateTask = ({ id, svg_events, mode = 'CREATE' }) => async (dispatch) => {
     try {
         dispatch(taskGeneralStateChange({ props: 'saving', value: true }));
-        dispatch({ type: ActionTypes.CATEGORY_TASK_UPDATE_STATIC, payload: { id, svg_events } });
         const response = await put({ url: `/task/${id}`, data: { svg_events }, params: { mode } });
+        dispatch({ type: ActionTypes.CATEGORY_TASK_UPDATE_STATIC, payload: { id, svg_events } });
         return response;
     } catch (err) {
         throw Error(err);
@@ -68,21 +72,27 @@ export const deleteTask = ({ id }) => async (dispatch) => {
  * @param {*} param0 
  * @returns 
  */
-export const reOrderCategory = ({ destination, id, source }) => async (dispatch) => {
+export const reOrderCategory = ({ destination, id, source }) => async (dispatch, getState) => {
     try {
         if (destination === source) return;
-        if (!destination) {
-            return;
-        }
+
         dispatch({ type: ActionTypes.CATEGORY_TASK_REORDER_STATIC, payload: { destination, source, id } });
-        const response = await put({ url: `/task/reorder/${id}`, data: { category: destination } }).catch(err => {
-            console.log(err);
-        });
-        dispatch(getCategories(false));
-        return response;
+
+        if (!getState().task.ordering) {
+            const order = getState().category.lastSavedOrder
+            dispatch(taskGeneralStateChange({ props: 'ordering', value: true }));
+            const response = await put({ url: `/task/reorder/${order.id}`, data: { category: order.destination } }).catch(err => {
+                console.log(err);
+            });
+            // dispatch(getCategories(false));
+            return response;
+
+        }
+
     } catch (err) {
         throw Error(err);
     } finally {
+        dispatch(taskGeneralStateChange({ props: 'ordering', value: false }));
     }
 }
 

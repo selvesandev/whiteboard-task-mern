@@ -2,7 +2,9 @@ import * as ActionTypes from './../ActionTypes';
 
 const INITIAL_STATE = {
     saving: false,
-    data: []
+    data: [],
+    ordering: false,
+
 }
 
 /**

@@ -301,3 +301,10 @@ h6 {
     padding: 10px 30px;
   }
 }
+
+.is_dragging {
+  transform: rotate(-10deg);
+}
+.dragging_over {
+  background-color: #eee;
+}
