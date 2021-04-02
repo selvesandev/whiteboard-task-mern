@@ -1,12 +1,17 @@
 import { get, post, put, deleteR } from '../../utils';
 import * as ActionTypes from '../ActionTypes';
 
+/**
+ * Use this to update the every category state on the reducer pass deep to update the object state on level down.
+ * @param {*} param0 
+ * @returns 
+ */
 export const categoryGeneralStateChange = ({ props, value, deep }) => {
     return { type: ActionTypes.CATEOGRY_GENERAL_STATE, payload: { props, value, deep } }
 }
 
 /**
- * 
+ * Fetch categories from the api
  * @param {*} loader 
  * @returns 
  */
@@ -24,7 +29,7 @@ export const getCategories = (loader = true) => async (dispatch) => {
 }
 
 /**
- * 
+ * Create new category
  * @param {*} param0 
  * @returns 
  */
@@ -41,7 +46,7 @@ export const createCategory = ({ name }) => async (dispatch) => {
 }
 
 /**
- * 
+ * Update Category
  * @param {*} param0 
  * @returns 
  */
@@ -58,7 +63,7 @@ export const updateCategory = ({ id, name }) => async (dispatch) => {
 
 
 /**
- * 
+ * Delete all task/categories
  * @param {*} param0 
  * @returns 
  */
@@ -78,11 +83,11 @@ export const flushRecord = () => async (dispatch) => {
 
 
 /**
- * 
+ * Download the json verson of mongo db.
  * @param {*} param0 
  * @returns 
  */
-export const downloadBackup = () => async (dispatch) => {
+export const downloadBackup = () => async () => {
     try {
         return await get({ url: `/category/download` });
     } catch (err) {

@@ -22,6 +22,11 @@ axios.interceptors.response.use(function (response) {
 });
 
 
+/**
+ * Send Get Request to the server uses axios
+ * @param {*} param0 
+ * @returns 
+ */
 export const get = ({ url, params }) => {
     let token = null;
     return new Promise((resolve, reject) => {
@@ -29,7 +34,6 @@ export const get = ({ url, params }) => {
             method: "GET",
             url,
             params,
-            // httpsAgent: new https.Agent({ rejectUnauthorized: false })
         };
         if (token) {
             requestObject.headers = {
@@ -40,6 +44,12 @@ export const get = ({ url, params }) => {
     });
 };
 
+
+/**
+ * Send Post Request to the server uses axios
+ * @param {*} param0
+ * @returns
+ */
 
 export const post = ({ url, data, params }) => {
     let token = null;
@@ -59,17 +69,15 @@ export const post = ({ url, data, params }) => {
             };
         }
 
-        // const formData = new FormData();
-
-        // requestObject.headers['Content-Type'] = 'multipart/form-data';
-        // Object.keys(requestObject.data).map((key, i) => {
-        //     formData.append(key, requestObject.data[key]);
-        // });
-        // requestObject.data = formData;
         return resolve(axios(requestObject));
     });
 };
 
+/**
+ * Send Put Request to the server uses axios
+ * @param {*} param0
+ * @returns
+ */
 
 export const put = ({ url, data, params }) => {
     let token = null;
@@ -92,6 +100,12 @@ export const put = ({ url, data, params }) => {
 };
 
 
+/**
+ * Send Delete Request to the server uses axios
+ * @param {*} param0
+ * @returns
+ */
+
 export const deleteR = ({ url, data, params = {} }) => {
     let token = null;
 
@@ -101,7 +115,6 @@ export const deleteR = ({ url, data, params = {} }) => {
             url,
             data,
             params,
-            // httpsAgent: new https.Agent({ rejectUnauthorized: false }),
             headers: {}
         };
         if (token) {

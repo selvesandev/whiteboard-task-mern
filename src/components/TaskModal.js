@@ -1,10 +1,14 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTask, getCategories, updateTask } from '../store/actions';
 import { Modal } from "./Modal";
 import { AppWhiteBoard } from "./WhiteBoard";
 
 let svgEvents = [];
+/**
+ * The TaskModal Components is responsible to update and create the task on the whiteboard.
+ * @param {*} param0 
+ * @returns 
+ */
 const TaskModal = ({ onClose, height = 440, category, show, mode = 'CREATE', selectedTask }) => {
     const dispatch = useDispatch();
     const task = useSelector(state => state.task);
@@ -15,7 +19,6 @@ const TaskModal = ({ onClose, height = 440, category, show, mode = 'CREATE', sel
         goodEvents = selectedTask.svg_events;
         svgEvents = selectedTask.svg_events;
     }
-    console.log(show);
 
     return <Modal
         btnText={!selectedTask ? 'Create Task' : (mode === 'CREATE' ? 'Update Task' : 'Duplicate Task')}

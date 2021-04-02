@@ -3,10 +3,20 @@ import { deleteR, post, put } from '../../utils';
 import { getCategories } from './categoryAction';
 
 
+/**
+ * Use this to update the every task state on the reducer pass deep to update the object state on level down.
+ * @param {*} param0 
+ * @returns 
+ */
 export const taskGeneralStateChange = ({ props, value, deep }) => {
     return { type: ActionTypes.TASK_GENERAL_STATE, payload: { props, value, deep } }
 }
 
+/**
+ * All /task to create task update the loading state
+ * @param {*} param0 
+ * @returns 
+ */
 export const createTask = ({ category, svg_events }) => async (dispatch) => {
     try {
         dispatch(taskGeneralStateChange({ props: 'saving', value: true }));
@@ -18,6 +28,11 @@ export const createTask = ({ category, svg_events }) => async (dispatch) => {
     }
 }
 
+/**
+ * Update the task.
+ * @param {*} param0 
+ * @returns 
+ */
 export const updateTask = ({ id, svg_events, mode = 'CREATE' }) => async (dispatch) => {
     try {
         dispatch(taskGeneralStateChange({ props: 'saving', value: true }));
@@ -32,12 +47,15 @@ export const updateTask = ({ id, svg_events, mode = 'CREATE' }) => async (dispat
 }
 
 
+/**
+ * Delete task with object id / aslo update the state before the api call for quick response
+ * @param {*} param0 
+ * @returns 
+ */
 export const deleteTask = ({ id }) => async (dispatch) => {
     try {
         dispatch({ type: ActionTypes.CATEGORY_TASK_DELETE_STATIC, payload: { value: id } });
-
         const response = await deleteR({ url: `/task/${id}` });
-        // dispatch(getCategories(false));
         return response;
     } catch (err) {
         throw Error(err);
@@ -45,6 +63,11 @@ export const deleteTask = ({ id }) => async (dispatch) => {
     }
 }
 
+/**
+ * Move the task from one component to the other / also update the task/categories update prio api call for quick response 
+ * @param {*} param0 
+ * @returns 
+ */
 export const reOrderCategory = ({ destination, id, source }) => async (dispatch) => {
     try {
         if (destination === source) return;

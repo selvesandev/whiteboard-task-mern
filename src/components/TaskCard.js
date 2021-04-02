@@ -1,4 +1,3 @@
-import { AppWhiteBoard } from "./WhiteBoard"
 import { useDispatch } from 'react-redux';
 import { deleteTask, getCategories, updateTask } from "../store/actions";
 import { useState } from 'react';
@@ -20,6 +19,7 @@ const TaskCard = ({ task, onUpdate, onDelete, onDuplicate }) => {
     return <div
         className={'notes n_card '} style={{}}>
 
+        {/* Whiteboard to render the svg */}
         <Whiteboard style={{ backgroundColor: 'white' }} height={150} events={eventStream} eventStore={eventStore} />
 
         <div className="card_action">
@@ -29,7 +29,6 @@ const TaskCard = ({ task, onUpdate, onDelete, onDuplicate }) => {
                 dispatch(updateTask({ id: task._id, svg_events: task.svg_events, mode: 'DUPLICATE' })).then((res) => {
                     dispatch(getCategories());
                 }).catch(err => {
-                    console.log(err);
                 }).finally(() => {
                     setDuplicate(false);
                 });
@@ -46,15 +45,12 @@ const TaskCard = ({ task, onUpdate, onDelete, onDuplicate }) => {
             <a href="/" onClick={(e) => {
                 e.preventDefault();
                 dispatch(deleteTask({ id: task._id })).catch(() => {
-                })
+                });
             }}>
                 <i className={"far fa-trash "}></i>
             </a>
         </div>
-
-
         <div className="overlay"></div>
-
     </div>
 }
 

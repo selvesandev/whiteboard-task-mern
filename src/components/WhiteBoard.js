@@ -1,6 +1,11 @@
 import { Whiteboard, EventStream, EventStore } from '@ohtomi/react-whiteboard';
 
 
+/**
+ * Extended whiteboard component for the App. Handles and sends the svg data on onStop event.
+ * @param {*} param0 
+ * @returns 
+ */
 const AppWhiteBoard = ({ width, height = 150, goodEvents, onStop }) => {
     const eventStream = new EventStream();
     const eventStore = new EventStore();

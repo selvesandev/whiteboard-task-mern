@@ -10,6 +10,12 @@ const INITIAL_STATE = {
     fetching: false,
 }
 
+/**
+ * 
+ * @param {*} state 
+ * @param {*} action 
+ * @returns 
+ */
 const CategoryReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case ActionTypes.CATEOGRY_GENERAL_STATE:
@@ -38,16 +44,12 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                 });
                 return item;
             });
-
-
             state.data.map(item => {
                 if (item._id === action.payload.destination) {
                     item.tasks.push(taskSelected);
                 }
                 return item;
             });
-
-
             return {
                 ...state
             };
@@ -61,8 +63,6 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                 });
                 return item;
             });
-
-
             return {
                 ...state
             };
@@ -70,7 +70,6 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
         case ActionTypes.CATEGORY_TASK_DELETE_STATIC:
             let categoryIndex = null;
             let taskIndex = null;
-
             try {
                 state.data.map((item, c) => {
                     categoryIndex = c;
@@ -82,12 +81,10 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                     })
                 })
             } catch (e) {
-
             }
             if (categoryIndex !== null && taskIndex !== null && state.data[categoryIndex]) {
                 state.data[categoryIndex].tasks.splice(taskIndex, 1);
             }
-
             return {
                 ...state
             }

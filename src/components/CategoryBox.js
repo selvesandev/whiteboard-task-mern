@@ -31,6 +31,7 @@ const CategoryBox = ({ category, selectCategory, children, mode = 'edit', onBlur
         }}><span>{category.name}</span></h2> :
             <form onSubmit={(e) => {
                 e.preventDefault();
+                //if category was send update or create
                 if (!category) {
                     dispatch(createCategory({ name: categoryName })).then(res => {
                         dispatch(getCategories());
@@ -51,6 +52,7 @@ const CategoryBox = ({ category, selectCategory, children, mode = 'edit', onBlur
                     setCategoryName(text);
                 }} placeholder={'Name your category'} onBlur={() => {
                     setSelectedCategory(null);
+                    //handle the cateogry input focus out from outside the component
                     if (onBlur)
                         onBlur();
                 }} value={categoryName} />

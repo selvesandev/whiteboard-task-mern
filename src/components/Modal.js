@@ -1,4 +1,8 @@
-
+/**
+ * Custom Modal with inbuild action buttons
+ * @param {*} param0 
+ * @returns 
+ */
 const Modal = ({ children, onClose, show = false, width = 500, height = 500, title, subTitle, onSave, loading = false, btnText = 'Create Task' }) => {
 
     if (show)

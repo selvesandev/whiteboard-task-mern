@@ -4,3 +4,5 @@ export * from './TaskCard';
 export * from './WhiteBoard';
 export * from './Modal';
 export * from './TaskModal';
+export * from './Loader';
+export * from './Downloader';

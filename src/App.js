@@ -1,67 +1,84 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { getCategories, reOrderCategory, flushRecord } from './store/actions';
+import { getCategories, reOrderCategory } from './store/actions';
 import {
   CategoryBox,
   TaskCard,
+  DownloadFlush,
   TaskModal,
 } from "./components";
-import { Loader } from "./components/Loader";
 
 
 // TODO Scroll to the right most corner when new category added. on content overflow
 
-
+/**
+ * App Initialized
+ * @returns 
+ */
 function App() {
+  //state with hook
+  //TODO Move this all the a custom hook
   const [selectedCategory, setselectedCategory] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [mode, setMode] = useState('CREATE');
-
+  const [mode, setMode] = useState('CREATE');//to handle the update/create/duplicate for the task
   const [addNewCategory, setAddNewCategory] = useState(false);
-  const dispatch = useDispatch();
-  const categoryState = useSelector(state => state.category)
+
+  const dispatch = useDispatch(); // to dispatch the redux action
+
+  const categoryState = useSelector(state => state.category);//access the category redux state
+  /**
+   * Fetch categories
+   */
   useEffect(() => {
     dispatch(getCategories()).catch(err => {
     });
-  }, []);
+  }, []);//call the function only once when the app initialized for the first time.
+
+
   return (
     <div className="App">
+      {/* React DnD Lirabry for drag and drop task around the category box */}
       <DragDropContext
         onDragEnd={(result) => {
           const { destination, source, draggableId } = result;
+          //reorder the category statically and with api when dropped.
           dispatch(reOrderCategory({ destination: destination.droppableId, id: draggableId, source: source.droppableId }));
         }}
       >
         {categoryState.data.map((category, catIn) => {
+          //Category Box contains the list of task under a category
           return (
             <Droppable droppableId={String(category._id)} key={catIn}>
               {provided => (
                 <section className="category_iterator" {...provided.droppableProps} ref={provided.innerRef}>
                   <CategoryBox
-                    selectCategory={(category) => { }}
                     key={catIn}
                     category={category}
                   >
                     {category.tasks ? category.tasks.map((task, taIn) => {
+                      //Task List inside the categories which can be moved aroud
                       return <Draggable index={taIn} draggableId={String(task._id)} key={taIn + catIn}>
                         {provided =>
                           <div ref={provided.innerRef} {...provided.draggableProps}
                             {...provided.dragHandleProps}>
-                            <TaskCard onUpdate={() => {
-                              setSelectedTask(task);
-                              setselectedCategory(category);
-                            }} onDuplicate={() => {
-                              setSelectedTask(task);
-                              setselectedCategory(category);
-                              setMode('DUPLICATE');
-                            }} key={taIn} task={task} />
+                            <TaskCard
+                              onUpdate={() => {
+                                setSelectedTask(task);
+                                setselectedCategory(category);
+                              }}
+                              onDuplicate={() => {
+                                setSelectedTask(task);
+                                setselectedCategory(category);
+                                setMode('DUPLICATE');
+                              }} key={taIn} task={task} />
                           </div>
                         }
                       </Draggable>;
                     }) : null}
+                    {/* Proceholder */}
                     {provided.placeholder}
-
+                    {/* TODO Add New Task Button Move this to a new component*/}
                     <div
                       onClick={() => {
                         if (!category.static && !categoryState.fetching) {
@@ -101,17 +118,7 @@ function App() {
         setSelectedTask(null);
       }} />
 
-      {categoryState.data.length > 0 ? <div className={'downloder'}>
-        <button onClick={() => {
-          window.location.href = process.env.REACT_APP_API_PATH + '/category/download';
-        }}>Download</button>
-
-        <button onClick={() => {
-          dispatch(flushRecord()).catch(err => {
-            console.log(err);
-          });
-        }}>Flush Records</button>
-      </div> : null}
+      {categoryState.data.length > 0 ? <DownloadFlush /> : null}
     </div >
   );
 }

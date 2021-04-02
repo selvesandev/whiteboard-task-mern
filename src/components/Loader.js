@@ -1,3 +1,8 @@
+/**
+ * SVG Loader component
+ * @param {*} param0 
+ * @returns 
+ */
 const Loader = ({ height = 100, width = 100, color = '#fff', isFullScreen = false }) => {
     return <div><div className={'loader ' + (isFullScreen ? 'full_screen' : '')}><svg style={{ width, height }} version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
         viewBox="0 0 100 100" enableBackground="new 0 0 0 0" >
