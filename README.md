@@ -13,6 +13,7 @@
 - [x] Downlod zip / json
 - [x] Drag / Drop and Task ordering
 - [ ] Write Unit Test / Setup Github Actions for CI.
+- [x] Creaete Instant Actions
 - [x] Deploy to heroku
 
 - [ ] Additional Feature Color Change / Erase / Marker Width Change / Auto Scroll to right edge on category overflow.
