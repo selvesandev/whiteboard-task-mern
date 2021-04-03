@@ -1,6 +1,5 @@
 import * as ActionTypes from '../ActionTypes';
 import { deleteR, post, put } from '../../utils';
-import { getCategories } from './categoryAction';
 
 
 /**
@@ -37,11 +36,12 @@ export const createTask = ({ category, svg_events }) => async (dispatch) => {
  * @param {*} param0 
  * @returns 
  */
-export const updateTask = ({ id, svg_events, mode = 'CREATE' }) => async (dispatch) => {
+export const updateTask = ({ id, svg_events, mode = 'CREATE', category }) => async (dispatch) => {
     try {
         dispatch(taskGeneralStateChange({ props: 'saving', value: true }));
-        const response = await put({ url: `/task/${id}`, data: { svg_events }, params: { mode } });
-        dispatch({ type: ActionTypes.CATEGORY_TASK_UPDATE_STATIC, payload: { id, svg_events } });
+        const response = await put({ url: `/task/${id}`, data: { svg_events, category: category }, params: { mode } });
+        dispatch({ type: ActionTypes.CATEGORY_TASK_UPDATE_STATIC, payload: { id: response.data.data._id, svg_events, mode, category } });
+        // dispatch(getCategories());
         return response;
     } catch (err) {
         throw Error(err);
@@ -78,14 +78,13 @@ export const reOrderCategory = ({ destination, id, source, sourceIndex, destinat
 
         dispatch({ type: ActionTypes.CATEGORY_TASK_REORDER_STATIC, payload: { destination, source, id } });
 
-        if (!getState().task.ordering) {
-            const order = getState().category.lastSavedOrder
-            dispatch(taskGeneralStateChange({ props: 'ordering', value: true }));
-            const response = await put({ url: `/task/reorder/${order.id}`, data: { category: order.destination } }).catch(err => {
-                console.log(err);
-            });
-            return response;
-        }
+        const order = getState().category.lastSavedOrder
+        dispatch(taskGeneralStateChange({ props: 'ordering', value: true }));
+        const response = await put({ url: `/task/reorder/${order.id}`, data: { category: order.destination } }).catch(err => {
+            console.log(err);
+        });
+        return response;
+        // }
 
     } catch (err) {
         throw Error(err);

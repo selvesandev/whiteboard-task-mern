@@ -20,7 +20,7 @@ const CategoryBox = ({ category, selectCategory, children, mode = 'edit', onBlur
         if (category) {
             setCategoryName(category.name);
         }
-    }, [])
+    }, [category])
 
     return <section>
         {mode !== 'add' && selectedCategory !== category.id ? <h2 className="cat_title" onClick={() => {
@@ -28,24 +28,25 @@ const CategoryBox = ({ category, selectCategory, children, mode = 'edit', onBlur
             if (selectCategory) {
                 selectCategory(category);
             }
-        }}><span>{category.name}</span></h2> :
+        }}><span>{categoryName}</span></h2> :
             <form onSubmit={(e) => {
                 e.preventDefault();
                 //if category was send update or create
                 if (!category) {
                     dispatch(createCategory({ name: categoryName })).then(res => {
                         dispatch(getCategories());
-                        if (onSave) onSave();
                     }).catch(err => {
                     });
+                    if (onSave) onSave();
+
                 } else {
                     dispatch(updateCategory({ id: category._id, name: categoryName })).then(res => {
-                        setSelectedCategory(null);
                         dispatch(getCategories());
                         if (onSave) onSave();
                     }).catch(err => {
-
                     });
+                    setSelectedCategory(null);
+
                 }
             }}>
                 <TextInputField loading={categoryState.saving} onChange={(text) => {
@@ -57,8 +58,9 @@ const CategoryBox = ({ category, selectCategory, children, mode = 'edit', onBlur
                         onBlur();
                 }} value={categoryName} />
             </form>}
-
-        {children}
+        <div className="category_card_container">
+            {children}
+        </div>
     </section>
 }
 

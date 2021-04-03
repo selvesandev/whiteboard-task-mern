@@ -15,6 +15,7 @@ const INITIAL_STATE = {
     }
 }
 
+
 /**
  * 
  * @param {*} state 
@@ -22,6 +23,34 @@ const INITIAL_STATE = {
  * @returns 
  */
 const CategoryReducer = (state = INITIAL_STATE, action) => {
+
+    /**
+     * Filter the task with the given id from the state
+     * @param {*} taskId 
+     * @returns 
+     */
+    function filterFromTask(taskId) {
+        let tsk = null;
+        try {
+            state.data.map(item => {
+                item.tasks.map(task => {
+                    if (task._id === taskId) {
+                        tsk = task;
+                        throw Error("");
+                    }
+                    return task;
+                });
+                return item;
+            });
+        } catch (err) {
+        }
+        return tsk;
+    }
+
+
+    /**
+     * Reducer Begins here
+     */
     switch (action.type) {
         case ActionTypes.CATEOGRY_GENERAL_STATE:
             if (!action.payload.deep) {
@@ -38,42 +67,42 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                 ...state
             };
         case ActionTypes.CATEGORY_TASK_REORDER_STATIC:
-            let taskSelected = {};
-            // let destination = {};
-            // let source = {};
+            const taskSelected = filterFromTask(action.payload.id);
             state.data.map(item => {
                 item.tasks = item.tasks.filter(task => {
-                    if (task._id === action.payload.id) {
-                        taskSelected = task;
-                    } else {
-                        return task;
-                    }
+                    return (task._id !== action.payload.id);
                 });
                 return item;
             });
+
+
             state.data = state.data.map(item => {
                 if (item._id === action.payload.destination) {
+                    if (taskSelected) {
+                        taskSelected.category = action.payload.destination;
+                    }
                     item.tasks.push(taskSelected);
-                } else {
-                    // item.tas
                 }
                 return item;
             });
-            console.log(state.data, 'reducer');
+            // console.log(state.data, 'reducer');
             state.lastSavedOrder = action.payload;
             return {
                 ...state
             };
         case ActionTypes.CATEGORY_TASK_UPDATE_STATIC:
-            state.data.map(item => {
-                item.tasks = item.tasks.map(task => {
-                    if (task._id === action.payload.id) {
-                        task.svg_events = action.payload.svg_events;
-                    }
-                    return task;
+            if (action.payload.mode === 'DUPLICATE') {
+                state.data.map(item => {
+                    item.tasks = item.tasks.map(task => {
+                        if (task._id === action.payload.id) {
+                            task.svg_events = action.payload.svg_events;
+                            // task.static = true;
+                        }
+                        return task;
+                    });
+                    return item;
                 });
-                return item;
-            });
+            }
             return {
                 ...state
             };
@@ -107,7 +136,9 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                             taskIndex = t;
                             throw Error("stop");
                         }
+                        return task;
                     })
+                    return item;
                 })
             } catch (e) {
             }

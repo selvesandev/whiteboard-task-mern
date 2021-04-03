@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     dispatch(getCategories()).catch(err => {
     });
-  }, []);//call the function only once when the app initialized for the first time.
+  }, [dispatch]);//call the function only once when the app initialized for the first time.
 
   return (
     <div className="App">

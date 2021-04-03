@@ -7,4 +7,5 @@ const randomStr = (length) => {
     }
     return result;
 }
+
 export { randomStr };

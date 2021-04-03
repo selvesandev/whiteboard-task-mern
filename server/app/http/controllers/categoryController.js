@@ -13,7 +13,7 @@ const Task = require('../../models/Task');
  */
 exports.index = async (req, res, next) => {
     try {
-        const categories = await Category.find().populate('tasks', 'svg_events').select({ name: 1 });
+        const categories = await Category.find().populate('tasks', 'svg_events category').select({ name: 1 });
         return responseData(res, { data: categories });
     } catch (e) {
         next(e);

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { createTask, getCategories, updateTask } from '../store/actions';
+import { createTask, updateTask } from '../store/actions';
 import { Modal } from "./Modal";
 import { AppWhiteBoard } from "./WhiteBoard";
 

@@ -74,9 +74,9 @@ exports.store = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
     try {
-
         const validateSchema = Joi.object({
-            svg_events: Joi.array().required()
+            svg_events: Joi.array().required(),
+            category: Joi.string()
         });
         const { error } = validateSchema.validate(req.body);
         if (error) return responseError(res, { error: formatVErrors(error) });
@@ -90,12 +90,12 @@ exports.update = async (req, res, next) => {
         if (req.query.mode && req.query.mode === 'DUPLICATE') {
             //if duplicate save a new task on the searched task's category aslo attach the new reference 
             //to category
-            const taskModel = new Task({ svg_events, category: task.category });
+            const taskModel = new Task({ svg_events, category: req.body.category });
             const newTask = await taskModel.save();
             await Category.findByIdAndUpdate(newTask.category, {
                 $push: { tasks: newTask._id },
             }, { new: true, useFindAndModify: false });
-            return responseSuccess(res, { data: [], msg: 'Task copied successfully' });
+            return responseSuccess(res, { data: newTask, msg: 'Task copied successfully' });
         }
 
         //else just update
