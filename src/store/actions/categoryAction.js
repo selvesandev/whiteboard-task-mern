@@ -22,7 +22,8 @@ export const getCategories = (loader = true) => async (dispatch) => {
         dispatch(categoryGeneralStateChange({ props: 'data', value: categories.data.data }));
 
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
         dispatch(categoryGeneralStateChange({ props: 'fetching', value: false }));
     }
@@ -39,7 +40,8 @@ export const createCategory = ({ name }) => async (dispatch) => {
         dispatch(categoryGeneralStateChange({ props: 'saving', value: true }));
         return await post({ url: '/category', data: { name } });
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
         dispatch(categoryGeneralStateChange({ props: 'saving', value: false }));
     }
@@ -55,7 +57,8 @@ export const updateCategory = ({ id, name }) => async (dispatch) => {
         dispatch(categoryGeneralStateChange({ props: 'saving', value: true }));
         return await put({ url: `/category/${id}`, data: { name } });
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
         dispatch(categoryGeneralStateChange({ props: 'saving', value: false }));
     }
@@ -74,7 +77,8 @@ export const flushRecord = () => async (dispatch) => {
         dispatch(getCategories());
         return response;
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
         dispatch(categoryGeneralStateChange({ props: 'saving', value: false }));
     }
@@ -91,7 +95,8 @@ export const downloadBackup = () => async () => {
     try {
         return await get({ url: `/category/download` });
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
     }
 }

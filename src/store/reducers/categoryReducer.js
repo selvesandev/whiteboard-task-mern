@@ -3,10 +3,7 @@ import * as ActionTypes from './../ActionTypes';
 
 const INITIAL_STATE = {
     saving: false,
-    data: [
-        // {name:'category',tasks:[{},{}]},
-        // {name:'category',tasks:[{},{}]}
-    ],
+    data: [],
     fetching: false,
     lastSavedOrder: {
         destination: '',
@@ -85,7 +82,6 @@ const CategoryReducer = (state = INITIAL_STATE, action) => {
                 }
                 return item;
             });
-            // console.log(state.data, 'reducer');
             state.lastSavedOrder = action.payload;
             return {
                 ...state

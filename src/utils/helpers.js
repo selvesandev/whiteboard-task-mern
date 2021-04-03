@@ -1,3 +1,8 @@
+/**
+ * Generate random character width given lenght
+ * @param {*} length 
+ * @returns 
+ */
 const randomStr = (length) => {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

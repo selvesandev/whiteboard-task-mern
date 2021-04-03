@@ -1,4 +1,4 @@
-import { flushRecord } from "../store/actions";
+import { flushRecord } from "../../store/actions";
 import { useDispatch } from 'react-redux';
 
 const DownloadFlush = () => {
@@ -9,9 +9,7 @@ const DownloadFlush = () => {
             window.location.href = process.env.REACT_APP_API_PATH + '/category/download';
         }}>Download</button>
         <button onClick={() => {
-            dispatch(flushRecord()).catch(err => {
-                console.log(err);
-            });
+            dispatch(flushRecord());
         }}>Flush Records</button>
     </div>
 }

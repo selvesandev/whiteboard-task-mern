@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { TextInputField } from './AppInputs';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { createCategory, getCategories, updateCategory } from '../store/actions';
+import { createCategory, getCategories, updateCategory } from '../../store/actions';
+import { TextInputField } from '../common/AppInputs';
 
 
 /**
@@ -35,16 +36,14 @@ const CategoryBox = ({ category, selectCategory, children, mode = 'edit', onBlur
                 if (!category) {
                     dispatch(createCategory({ name: categoryName })).then(res => {
                         dispatch(getCategories());
-                    }).catch(err => {
-                    });
+                    })
                     if (onSave) onSave();
 
                 } else {
                     dispatch(updateCategory({ id: category._id, name: categoryName })).then(res => {
                         dispatch(getCategories());
                         if (onSave) onSave();
-                    }).catch(err => {
-                    });
+                    })
                     setSelectedCategory(null);
 
                 }

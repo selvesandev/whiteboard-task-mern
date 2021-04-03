@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { createTask, updateTask } from '../store/actions';
-import { Modal } from "./Modal";
-import { AppWhiteBoard } from "./WhiteBoard";
+import { createTask, updateTask } from '../../store/actions';
+import { Modal } from "../common/Modal";
+import { AppWhiteBoard } from "../app/WhiteBoard";
 
 let svgEvents = [];
 /**
@@ -27,19 +27,13 @@ const TaskModal = ({ onClose, height = 440, category, show, mode = 'CREATE', sel
             if (svgEvents && svgEvents.length) {
                 if (selectedTask) {
                     dispatch(updateTask({ svg_events: svgEvents, id: selectedTask._id, mode })).then(res => {
-                        // dispatch(getCategories());
                         onClose();
-                    }).catch(err => {
-                        console.log(err);
-                    })
+                    });
                 } else {
                     dispatch(createTask({ svg_events: svgEvents, category: category._id })).then(res => {
-                        // dispatch(getCategories());
                         svgEvents = [];
                         onClose();
-                    }).catch(err => {
-                        console.log(err);
-                    })
+                    });
                 }
             }
         }}

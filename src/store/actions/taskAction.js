@@ -25,7 +25,8 @@ export const createTask = ({ category, svg_events }) => async (dispatch) => {
         dispatch({ type: ActionTypes.CATEGORY_TASK_STATIC, payload: { category, svg_events, id: response.data.data._id } });
 
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
         dispatch(taskGeneralStateChange({ props: 'saving', value: false }));
     }
@@ -44,7 +45,8 @@ export const updateTask = ({ id, svg_events, mode = 'CREATE', category }) => asy
         // dispatch(getCategories());
         return response;
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
         dispatch(taskGeneralStateChange({ props: 'saving', value: false }));
     }
@@ -62,7 +64,8 @@ export const deleteTask = ({ id }) => async (dispatch) => {
         const response = await deleteR({ url: `/task/${id}` });
         return response;
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
     }
 }
@@ -87,7 +90,8 @@ export const reOrderCategory = ({ destination, id, source, sourceIndex, destinat
         // }
 
     } catch (err) {
-        throw Error(err);
+        //handle error response here..
+        console.log(err);
     } finally {
         dispatch(taskGeneralStateChange({ props: 'ordering', value: false }));
     }

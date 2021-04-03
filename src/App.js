@@ -7,6 +7,7 @@ import {
   TaskCard,
   DownloadFlush,
   TaskModal,
+  CategoryCreator,
 } from "./components";
 
 
@@ -21,8 +22,6 @@ function App() {
   //TODO Move this all the a custom hook
   const [selectedCategory, setselectedCategory] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [mode, setMode] = useState('CREATE');//to handle the update/create/duplicate for the task
-  const [addNewCategory, setAddNewCategory] = useState(false);
 
   const dispatch = useDispatch(); // to dispatch the redux action
 
@@ -31,8 +30,7 @@ function App() {
    * Fetch categories
    */
   useEffect(() => {
-    dispatch(getCategories()).catch(err => {
-    });
+    dispatch(getCategories());
   }, [dispatch]);//call the function only once when the app initialized for the first time.
 
   return (
@@ -77,11 +75,7 @@ function App() {
                                 setSelectedTask(task);
                                 setselectedCategory(category);
                               }}
-                              onDuplicate={() => {
-                                setSelectedTask(task);
-                                setselectedCategory(category);
-                                setMode('DUPLICATE');
-                              }} key={taIn} task={task} />
+                              key={taIn} task={task} />
                           </div>
                         }
                       </Draggable>;
@@ -108,22 +102,9 @@ function App() {
         })}
       </DragDropContext>
 
-      {addNewCategory ? <section className="category_iterator">
-        <CategoryBox onSave={() => {
-          setAddNewCategory(false);
-        }} onBlur={() => {
-          setAddNewCategory(false);
-        }} mode={'add'} />
-      </section> : <section style={{ marginRight: 40 }}
-        onClick={() => {
-          setAddNewCategory(true);
-        }}
-        className="action_add action_add_category"
-      >
-        <i className="fas fa-plus-circle"></i> &nbsp;Add New Category
-      </section>}
+      <CategoryCreator />
 
-      <TaskModal mode={mode} selectedTask={selectedTask} show={selectedCategory !== null} category={selectedCategory} onClose={() => {
+      <TaskModal selectedTask={selectedTask} show={selectedCategory !== null} category={selectedCategory} onClose={() => {
         setselectedCategory(null);
         setSelectedTask(null);
       }} />
