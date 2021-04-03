@@ -17,3 +17,10 @@
 - [x] Deploy to heroku
 
 - [ ] Additional Feature Color Change / Erase / Marker Width Change / Auto Scroll to right edge on category overflow.
+
+## Installation
+
+1. `cd` to the project's folder and `npm install`;
+2. Start the react development server on the same folder npm `start-client`;
+3. now `cd` to the server folder inside the project's folder and start the node js server `npm start`.
+4. the project should also contain the .env file for both client and server. eg .env.copy file is placed inside the root directory of both client and server.
